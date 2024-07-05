@@ -1,0 +1,10 @@
+services:
+  db:
+    build: ./db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  rabbitmq-server:
+    build: ./rabbitmq-server
+    
+volumes:
+  db_data:
