@@ -1,10 +1,19 @@
+version: '3'
 services:
   db:
     build: ./db
     volumes:
       - db_data:/var/lib/postgresql/data
+
   rabbitmq-server:
-    build: ./rabbitmq-server
-    
+    image: rabbitmq:3-management
+    container_name: rabbitmq-server
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/data
+
 volumes:
   db_data:
+  rabbitmq_data:
