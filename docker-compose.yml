@@ -58,6 +58,24 @@ services:
     environment:
       RABBIT_SERVER_URL: http://rabbitmq-server:5010/message
 
+  grpc-server:
+    build: ./grpc-server
+    container_name: grpc-server
+    ports:
+      - "5020:5020"
+    environment:
+      MONGO_URI: mongodb://root:example@mongodb:27017/
+
+  grpc-client:
+    build: ./grpc-client
+    container_name: grpc-client
+    ports:
+      - "5021:5021"
+    depends_on:
+      - grpc-server
+    environment:
+      INSECURE_CHANNEL_NAME: grpc-server
+
 
 volumes:
   mongo_data:

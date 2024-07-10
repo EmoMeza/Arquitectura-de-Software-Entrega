@@ -28,21 +28,16 @@ class MessageServiceServicer(message_pb2_grpc.MessageServiceServicer):
                 'Sistema': "GRPC",
                 'Estado': 0
             }
-            print(data)
+            collection.insert_one(data)
             return message_pb2.MessageResponse(result='Message added successfully')
-        except errors.ValidationError as e:
-            return message_pb2.MessageResponse(result=str(e))
-        except errors.NotUniqueError:
-            return message_pb2.MessageResponse(result='Message already exists')
         except Exception as e:
             print(f"Failed to save message: {e}")
             return message_pb2.MessageResponse(result='Failed to save message due to internal error')
 
-
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     message_pb2_grpc.add_MessageServiceServicer_to_server(MessageServiceServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('[::]:5020')
     server.start()
     server.wait_for_termination()
 
