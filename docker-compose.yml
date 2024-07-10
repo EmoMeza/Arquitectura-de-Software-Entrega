@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   mongodb:
     image: mongo:latest
@@ -9,6 +10,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongo_data:/data/db
+
   rabbitmq-server:
     image: rabbitmq:3-management
     container_name: rabbitmq-server
@@ -31,6 +33,38 @@ services:
       - rest-server
     ports:
       - "5001:5001"
+
+  grpc-server:
+    build: ./grpc-server
+    container_name: grpc-server
+    ports:
+      - "50051:50051"
+    depends_on:
+      - mongodb
+
+  grpc-client:
+    build: ./grpc-client
+    container_name: grpc-client
+    depends_on:
+      - grpc-server
+
+  websocket-server:
+    build: ./websocket-server
+    container_name: websocket-server
+    ports:
+      - "8080:8080"
+
+  websocket-client:
+    build: ./websocket-client
+    container_name: websocket-client
+    depends_on:
+      - websocket-server
+
+  rabbitmq-client:
+    build: ./rabbitmq-client
+    container_name: rabbitmq-client
+    depends_on:
+      - rabbitmq-server
 
 volumes:
   mongo_data:

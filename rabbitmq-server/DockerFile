@@ -1,0 +1,5 @@
+FROM node:14
+WORKDIR /app
+COPY . .
+RUN npm install amqplib mongodb ws
+CMD ["node", "rabbitmq_server.js"]
