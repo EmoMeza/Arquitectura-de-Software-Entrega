@@ -12,7 +12,7 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  rabbitmq-server:
+  rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
@@ -36,6 +36,28 @@ services:
       - "5001:5001"
     depends_on:
       - rest-server
+  
+  rabbitmq-server:
+    build: ./rabbitmq-server
+    container_name: rabbitmq-server
+    ports:
+      - "5010:5010"
+    environment:
+      MONGO_URI: mongodb://root:example@mongodb:27017/
+      RABBITMQ: rabbitmq
+    depends_on:
+      - rabbitmq
+  
+  rabbitmq-client:
+    build: ./rabbitmq-client
+    container_name: rabbitmq-client
+    ports:
+      - "5011:5011"
+    depends_on:
+      - rabbitmq-server
+    environment:
+      RABBIT_SERVER_URL: http://rabbitmq-server:5010/message
+
 
 volumes:
   mongo_data:

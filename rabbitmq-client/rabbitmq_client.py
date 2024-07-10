@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 import requests
 import json
-from datetime import datetime
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 def send_message():
     try:
         data = request.get_json()
-        url = os.environ.get('REST_SERVER_URL', 'http://localhost:5000/message')  # Use the Docker service name 'flask-service'
+        url = os.environ.get('RABBIT_SERVER_URL', 'http://localhost:5010/message')  # Use the Docker service name 'flask-service'
 
         # Forward the received data to the Flask service
         response = requests.post(url, json=data)
@@ -25,4 +25,4 @@ def send_message():
         return jsonify({"error": "An unexpected error occurred: " + str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=True, host='0.0.0.0', port=5011)
