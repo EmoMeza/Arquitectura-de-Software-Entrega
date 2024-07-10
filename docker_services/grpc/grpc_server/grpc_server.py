@@ -44,7 +44,7 @@ class MessageServiceServicer(message_pb2_grpc.MessageServiceServicer):
                 'message': f"Se ingresó un registro mediante GRPC, con el mensaje \"{message.content}\", total de mensajes {total_messages}"
             })
 
-            return message_pb2.MessageResponse(result='Message added successfully')
+            return message_pb2.MessageResponse(result=f'Texto:{message.content}, FechaHora:{data["FechaHora"]}, Sistema:{data["Sistema"]}, Estado:{data["Estado"]} ')
         except Exception as e:
             print(f"Failed to save message: {e}")
             return message_pb2.MessageResponse(result='Failed to save message due to internal error')

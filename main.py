@@ -1,27 +1,21 @@
 
 import grpc
 import requests
-from services import GRPC_Sender
+from services import messageSender as ms
+
+
 def get_last_line():
     pass
 def switch(opcion, mensaje):
     if opcion == "1":
         print("Has seleccionado la opción 1 GRPC")
-        GRPC_Sender.SendGRPC(mensaje)
-        response = requests.get('http://localhost:6000/output')
-        print("Websocket response:", response.text)
+        ms.sendGRPC(mensaje)
     elif opcion == "2":
         print("Has seleccionado la opción 2 REST")
-        response = requests.post('http://localhost:5000/message', json={"texto": mensaje})
-        print("Server response:", response.text)
-        response = requests.get('http://localhost:6000/output')
-        print("Websocket response:", response.text)
+        ms.sendREST(mensaje)
     elif opcion == "3":
         print("Has seleccionado la opción 3 RabbitMQ")
-        response = requests.post('http://localhost:5010/message', json={"texto": mensaje})
-        print("Server response:", response.text)
-        response = requests.get('http://localhost:6000/output')
-        print("Websocket response:", response.text)
+        ms.sendRabbitMQ(mensaje)
     else:
         print("Opción inválida")
 
