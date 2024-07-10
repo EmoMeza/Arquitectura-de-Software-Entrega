@@ -19,6 +19,9 @@ db = client['messages']
 collection = db['list']
 
 
+##SOCKETIO
+from flask_socketio import SocketIO
+socketio = SocketIO(app)
 # Custom JSON encoder to handle ObjectId
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
@@ -47,6 +50,7 @@ def send_messageRabbitMQ(message):
                         routing_key='test',
                         body=message)
     print(f" [x] Sent '{message}'")
+    channel.close()
     # Close the connection to RabbitMQ server
 
 
@@ -66,6 +70,15 @@ def create_message():
         "status": "success",
         "data": data
     }
+    # Emitting WebSocket message
+    total_messages = collection.count_documents({})
+    message = {
+        'clientType': data['Sistema'],
+        'content': json_data['texto']
+    }
+    socketio.emit('message_uploaded', {
+        'message': f"Se ingresó un registro mediante {message['clientType']}, con el mensaje \"{message['content']}\", total de mensajes {total_messages}"
+    })
     return app.response_class(
         response=json.dumps(response, cls=JSONEncoder),
         status=201,

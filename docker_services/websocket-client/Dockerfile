@@ -5,13 +5,13 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copia los archivos necesarios al contenedor
-COPY rabbitmq_server.py /app
+COPY websocket_client.py /app
 
 # Instala Flask y pymongo
-RUN pip install flask pymongo pika retry
+RUN pip install flask_socketio requests websocket-client
 
 # Expone el puerto en el que la aplicación correrá
-EXPOSE 5010
+EXPOSE 5000
 
 # Comando para ejecutar la aplicación
-CMD ["python", "rabbitmq_server.py"]
+CMD ["python", "websocket_client.py"]

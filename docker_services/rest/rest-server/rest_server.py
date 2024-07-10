@@ -4,8 +4,10 @@ from bson import ObjectId
 import os
 import json  # Add this import
 from datetime import datetime
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 # Conexión a MongoDB
 mongo_uri = os.environ.get('MONGO_URI', 'mongodb://root:example@localhost:27017')
 client = MongoClient(mongo_uri)
@@ -36,6 +38,16 @@ def create_message():
         "status": "success",
         "data": data
     }
+
+        # Emitting WebSocket message
+    total_messages = collection.count_documents({})
+    message = {
+        'clientType': data['Sistema'],
+        'content': json_data['texto']
+    }
+    socketio.emit('message_uploaded', {
+        'message': f"Se ingresó un registro mediante {message['clientType']}, con el mensaje \"{message['content']}\", total de mensajes {total_messages}"
+    })
     return app.response_class(
         response=json.dumps(response, cls=JSONEncoder),
         status=201,

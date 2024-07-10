@@ -5,16 +5,13 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copia los archivos necesarios al contenedor
-COPY grpc_server.py /app
-COPY message.proto /app
-COPY message_pb2.py /app
-COPY message_pb2_grpc.py /app
+COPY rabbitmq_server.py /app
 
 # Instala Flask y pymongo
-RUN pip install pymongo grpcio-tools grpcio mongoengine
+RUN pip install flask pymongo pika flask_socketio
 
 # Expone el puerto en el que la aplicación correrá
-EXPOSE 5020
+EXPOSE 5010
 
 # Comando para ejecutar la aplicación
-CMD ["python", "grpc_server.py"]
+CMD ["python", "rabbitmq_server.py"]
