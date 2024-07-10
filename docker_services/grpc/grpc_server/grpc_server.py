@@ -58,7 +58,8 @@ def grpc_server():
 
 # Running Flask-SocketIO alongside gRPC server in a separate thread
 if __name__ == '__main__':
+    print("Starting gRPC server thread...")
     grpc_thread = threading.Thread(target=grpc_server)
     grpc_thread.start()
-    socketio.run(app, host='0.0.0.0', port=5030, allow_unsafe_werkzeug=True)
-
+    print("Starting Flask-SocketIO server...")
+    socketio.run(app, host='0.0.0.0', port=5031, allow_unsafe_werkzeug=True)

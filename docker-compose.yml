@@ -22,7 +22,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq/data
 
   rest-server:
-    build: ./docker_services/rest/rest-server
+    build: ./docker_services/rest/rest_server
     container_name: rest-server
     ports:
       - "5000:5000"
@@ -30,7 +30,7 @@ services:
       MONGO_URI: mongodb://root:example@mongodb:27017/  # Adjust MongoDB URI as per your setup
 
   rest-client:
-    build: ./docker_services/rest/rest-client
+    build: ./docker_services/rest/rest_client
     container_name: rest-client
     ports:
       - "5001:5001"
@@ -40,7 +40,7 @@ services:
       REST_SERVER_URL: http://rest-server:5000
   
   rabbitmq-server:
-    build: ./docker_services/rabbitmq/rabbitmq-server
+    build: ./docker_services/rabbitmq/rabbitmq_server
     container_name: rabbitmq-server
     ports:
       - "5010:5010"
@@ -51,7 +51,7 @@ services:
       - rabbitmq
   
   rabbitmq-client:
-    build: ./docker_services/rabbitmq/rabbitmq-client
+    build: ./docker_services/rabbitmq/rabbitmq_client
     container_name: rabbitmq-client
     ports:
       - "5011:5011"
@@ -61,15 +61,16 @@ services:
       RABBIT_SERVER_URL: http://rabbitmq-server:5010/message
 
   grpc-server:
-    build: ./docker_services/grpc/grpc-server
+    build: ./docker_services/grpc/grpc_server
     container_name: grpc-server
     ports:
       - "5020:5020"
+      - "5031:5031"
     environment:
       MONGO_URI: mongodb://root:example@mongodb:27017/
 
   grpc-client:
-    build: ./docker_services/grpc/grpc-client
+    build: ./docker_services/grpc/grpc_client
     container_name: grpc-client
     ports:
       - "5021:5021"
@@ -79,16 +80,16 @@ services:
       INSECURE_CHANNEL_NAME: grpc-server
 
   websocket-client:
-    build: ./docker_services/websocket-client
+    build: ./docker_services/websocket_client
     container_name: websocket-client
     ports:
-      - "5030:5030"
+      - "6000:6000"
     depends_on:
       - grpc-server
       - rabbitmq-server
       - rest-server
     environment:
-      GRPC_SERVER_URL: http://grpc-server:5030
+      GRPC_SERVER_URL: http://grpc-server:5031
       RABBITMQ_SERVER_URL: http://rabbitmq-server:5010
       REST_SERVER_URL: http://rest-server:5000
 
