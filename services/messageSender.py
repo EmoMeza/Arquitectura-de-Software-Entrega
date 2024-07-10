@@ -4,7 +4,7 @@ import services.message_pb2_grpc as message_pb2_grpc
 import requests
 
 def sendREST(mensaje):
-        response = requests.post('http://localhost:5000/message', json={"texto": mensaje})
+        response = requests.post('http://localhost:5040/message', json={"texto": mensaje})
         print("Server response:", response.text)
         response = requests.get('http://localhost:6000/output')
         print("Websocket response:", response.text)

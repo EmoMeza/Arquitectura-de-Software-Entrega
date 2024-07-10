@@ -25,7 +25,7 @@ services:
     build: ./docker_services/rest/rest_server
     container_name: rest-server
     ports:
-      - "5000:5000"
+      - "5040:5040"
     environment:
       MONGO_URI: mongodb://root:example@mongodb:27017/  # Adjust MongoDB URI as per your setup
 
@@ -37,7 +37,7 @@ services:
     depends_on:
       - rest-server
     environment:
-      REST_SERVER_URL: http://rest-server:5000
+      REST_SERVER_URL: http://rest-server:5040
   
   rabbitmq-server:
     build: ./docker_services/rabbitmq/rabbitmq_server
@@ -91,7 +91,7 @@ services:
     environment:
       GRPC_SERVER_URL: http://grpc-server:5031
       RABBITMQ_SERVER_URL: http://rabbitmq-server:5010
-      REST_SERVER_URL: http://rest-server:5000
+      REST_SERVER_URL: http://rest-server:5040
 
 
 volumes:
