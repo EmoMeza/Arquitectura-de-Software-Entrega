@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mongodb:
     image: mongo:latest
@@ -9,6 +11,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongo_data:/data/db
+
   rabbitmq-server:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -23,14 +26,16 @@ services:
     container_name: rest-server
     ports:
       - "5000:5000"
+    environment:
+      MONGO_URI: mongodb://root:example@mongodb:27017/  # Adjust MongoDB URI as per your setup
 
   rest-client:
     build: ./rest-client
     container_name: rest-client
-    depends_on:
-      - rest-server
     ports:
       - "5001:5001"
+    depends_on:
+      - rest-server
 
 volumes:
   mongo_data:

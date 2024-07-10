@@ -9,7 +9,7 @@ app = Flask(__name__)
 def send_message():
     try:
         data = request.get_json()
-        url = 'http://flask-service:5000/message'  # Use the Docker service name 'flask-service'
+        url = 'http://rest-server:5000/message'  # Use the Docker service name 'flask-service'
 
         # Forward the received data to the Flask service
         response = requests.post(url, json=data)

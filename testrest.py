@@ -9,10 +9,7 @@ url = 'http://localhost:5001/send_message'
 
 # Data to send to the client service
 data = {
-    "Texto": "Hola Emo",
-    "FechaHora": datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
-    "Sistema": "REST",
-    "Estado": 0
+    "texto": "No hay nada más noble que hacer el bien sin esperar nada a cambio",
 }
 
 # Convert data to JSON
